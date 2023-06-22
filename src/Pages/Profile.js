@@ -1,12 +1,26 @@
 import { Button, FormControl, FormGroup, FormLabel,FormText,Row,Col } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import Card from '../UI/Card'
-import { useRef } from 'react'
+import { useRef,useEffect } from 'react'
 import axios from 'axios'
 const Profile = ()=>{
+    const token=localStorage.getItem('token')
     const nameRef=useRef()
     const linkRef=useRef()
-    const token=localStorage.getItem('token')
+    
+    useEffect(()=>{
+        async function getUserData(){
+            const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyACEG0j7ZsoZfGZzWq5No8W8_75yFKPx-k',{
+                idToken:token
+            })
+            console.log(res.data)
+            nameRef.current.value=res.data.displayName
+            linkRef.current.value=res.data.photoUrl
+        }
+        getUserData()
+       
+    },[token])
+   
     console.log(token)
 
 const updateHandler = async (e)=>{

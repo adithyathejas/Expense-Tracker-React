@@ -15,7 +15,7 @@ function App() {
       children:[
         {path:"/",element:<Authentication/>}
         ,{path:"/expensetracker",element:<ExpenseTracker/>},
-        {path:"/profile",element:<Profile/>}
+        {path:"/profile",element:<Profile/>},{path:"/signin",element:<Authentication/>}
       ]
     }
   ])
