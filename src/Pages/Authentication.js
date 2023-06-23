@@ -5,7 +5,7 @@ import Login from "../Authentication/Login";
 import  Button  from "react-bootstrap/Button";
 
 const Authentication = ()=>{
-    const [isSignup,setIsSignup] = useState(true)
+    const [isSignup,setIsSignup] = useState(false)
     
     return(<Card>
         {
@@ -13,7 +13,7 @@ const Authentication = ()=>{
         }
       <div style={{ display: 'flex', justifyContent: 'center' }}>
   <Button variant="link" onClick={() => { setIsSignup(prev => !prev) }} style={{ color: 'green' }}>
-    {isSignup ? 'Have an account? Sign in' : "Don't have an account? Login"}
+    {isSignup ? 'Have an account? Sign in' : "Don't have an account! sign up now"}
   </Button>
 </div>
         
