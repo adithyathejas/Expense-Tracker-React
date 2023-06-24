@@ -47,7 +47,7 @@ const ExpenseForm = (props) => {
               <option value="Food">Food</option>
               <option value="Petrol">Petrol</option>
               <option value="Salary">Salary</option>
-              <option value="Salary">entertainment</option>
+              <option value="Entertainment">Entertainment</option>
               {/* Add more options as needed */}
             </Form.Control>
           </Form.Group>

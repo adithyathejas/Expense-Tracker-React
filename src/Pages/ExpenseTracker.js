@@ -3,13 +3,28 @@ import {Button,Badge,Row,Col, Container} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import ExpenseForm from '../TrackerComponents/ExpenseForm'
 import ExpenseItems from '../TrackerComponents/ExpenseItems'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 
 const ExpenseTracker= ()=> {
+    useEffect(()=>{
+        const updateitem = async ()=>{
+                let res = await axios.get('https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses.json')
+                console.log('response',res.data)
+                Object.values(res.data).forEach(item=>setItems(prev=>[...prev,item]))
+        }
+        updateitem()
+    },[])
     const [items,setItems]=useState([])
 
-    const ItemHandler=(item)=>{
-        setItems([...items,item])
+    const ItemHandler=async (item)=>{
+       try{
+        let res= await axios.post('https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses.json',item)
+        setItems(prev=>[...prev,item])
+        console.log(res)
+       }
+       catch(e){
+        console.log(e)
+       }
     }
 
     const emailVerificationHandler=async ()=>{
