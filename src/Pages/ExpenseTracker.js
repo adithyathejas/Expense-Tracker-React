@@ -1,8 +1,17 @@
 import axios from 'axios'
 import {Button,Badge,Row,Col, Container} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import ExpenseForm from '../TrackerComponents/ExpenseForm'
+import ExpenseItems from '../TrackerComponents/ExpenseItems'
+import { useState } from 'react'
 
 const ExpenseTracker= ()=> {
+    const [items,setItems]=useState([])
+
+    const ItemHandler=(item)=>{
+        setItems([...items,item])
+    }
+
     const emailVerificationHandler=async ()=>{
         try{
         let token = localStorage.getItem('token')
@@ -17,7 +26,7 @@ const ExpenseTracker= ()=> {
         <>
         <Container className='mt-3' fluid >
         <Row >
-            <Col xs='10' >
+            <Col xs='8' >
         <h1>welcome to expense Tracker</h1>
         </Col>
         <Col xs='2'>
@@ -29,6 +38,8 @@ const ExpenseTracker= ()=> {
         <Badge bg='secondary'>verify email<Button className='m-3' onClick={emailVerificationHandler}>verify now</Button></Badge>
         </Col>
         </Row>
+        <Row><ExpenseForm ItemHandler={ItemHandler}/></Row>
+        <Row><ExpenseItems ItemList={items}/></Row>
         </Container>
         </>
     )

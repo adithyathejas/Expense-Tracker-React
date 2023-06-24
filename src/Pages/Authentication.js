@@ -11,7 +11,7 @@ import 'rodal/lib/rodal.css';
 const Authentication = ()=>{
     const [isSignup,setIsSignup] = useState(false)
     const [rodalState,toggleRodalStateHandler] = useState(false)
-
+    
     const rodalHandler=()=>{
         toggleRodalStateHandler(prev=>!prev)          
     }
