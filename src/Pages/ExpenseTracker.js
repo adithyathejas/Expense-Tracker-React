@@ -6,21 +6,42 @@ import ExpenseItems from '../TrackerComponents/ExpenseItems'
 import { useState,useEffect } from 'react'
 
 const ExpenseTracker= ()=> {
+    const [rerender,setrerender]=useState(false)
+    const rerenderHandler = ()=>{
+        setrerender(prev=>!prev)
+        console.log('rerendered')
+    }
+
     useEffect(()=>{
         const updateitem = async ()=>{
+                console.log('updated')
+                setItems([])
                 let res = await axios.get('https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses.json')
                 console.log('response',res.data)
-                Object.values(res.data).forEach(item=>setItems(prev=>[...prev,item]))
+                for(let key in res.data){
+                    let item = res.data[key]
+                    let newItem= {
+                        name: key,
+                        ...item
+                    }
+                    
+                    setItems(prev=>[...prev,newItem])
+                    console.log(newItem)
+                }
         }
         updateitem()
-    },[])
+    },[rerender])
     const [items,setItems]=useState([])
 
     const ItemHandler=async (item)=>{
        try{
         let res= await axios.post('https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses.json',item)
-        setItems(prev=>[...prev,item])
-        console.log(res)
+        let newItem={
+            name:res.data.name,
+            ...item
+        }
+        setItems(prev=>[...prev,newItem])
+        console.log(res.data.name)
        }
        catch(e){
         console.log(e)
@@ -39,7 +60,6 @@ const ExpenseTracker= ()=> {
     const Navigate =useNavigate()
     return(
         <>
-        <Container className='mt-3' fluid >
         <Row >
             <Col xs='8' >
         <h1>welcome to expense Tracker</h1>
@@ -54,8 +74,7 @@ const ExpenseTracker= ()=> {
         </Col>
         </Row>
         <Row><ExpenseForm ItemHandler={ItemHandler}/></Row>
-        <Row><ExpenseItems ItemList={items}/></Row>
-        </Container>
+        <Row><ExpenseItems ItemList={items} rerender={rerenderHandler}/></Row>
         </>
     )
 }

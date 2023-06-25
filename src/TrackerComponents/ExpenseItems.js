@@ -5,11 +5,11 @@ import Items from './Items'
 const ExpenseItems=(props)=>{
   
   let slno=1
-  const items = props.ItemList.map(item=><Items key={++slno} slno={slno}Item={item}></Items>)
+  const items = props.ItemList.map(item=><Items key={item.name} slno={slno++} item={item} rerender={props.rerender}></Items>)
 
 return(
   <BackgroundCard>
-    <Table fluid>
+    <Table fluid={true}>
        
             <thead>
                 <tr>
