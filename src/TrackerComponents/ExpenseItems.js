@@ -1,11 +1,13 @@
 import { Container, Table } from "react-bootstrap"
 import BackgroundCard from "../UI/FormBackground"
 import Items from './Items'
+import  {useSelector}  from "react-redux"
+
 
 const ExpenseItems=(props)=>{
-  
+  const ItemList = useSelector(state=>state.expense.Items)
   let slno=1
-  const items = props.ItemList.map(item=><Items key={item.name} slno={slno++} item={item} rerender={props.rerender}></Items>)
+  const items = ItemList.map(item=><Items key={item.name} slno={slno++} item={item} rerender={props.rerender}></Items>)
 
 return(
   <BackgroundCard>

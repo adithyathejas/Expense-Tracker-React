@@ -4,18 +4,15 @@ import { useNavigate } from 'react-router-dom'
 import ExpenseForm from '../TrackerComponents/ExpenseForm'
 import ExpenseItems from '../TrackerComponents/ExpenseItems'
 import { useState,useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { expenseActions } from '../Store/ExpenseReducer'
 
 const ExpenseTracker= ()=> {
-    const [rerender,setrerender]=useState(false)
-    const rerenderHandler = ()=>{
-        setrerender(prev=>!prev)
-        console.log('rerendered')
-    }
+    const Dispatch = useDispatch()
 
     useEffect(()=>{
         const updateitem = async ()=>{
                 console.log('updated')
-                setItems([])
                 let res = await axios.get('https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses.json')
                 console.log('response',res.data)
                 for(let key in res.data){
@@ -25,13 +22,14 @@ const ExpenseTracker= ()=> {
                         ...item
                     }
                     
-                    setItems(prev=>[...prev,newItem])
+                    Dispatch(expenseActions.addItem(newItem))
                     console.log(newItem)
                 }
         }
         updateitem()
-    },[rerender])
-    const [items,setItems]=useState([])
+    },[])
+    // const [items,setItems]=useState([])
+    
 
     const ItemHandler=async (item)=>{
        try{
@@ -40,7 +38,7 @@ const ExpenseTracker= ()=> {
             name:res.data.name,
             ...item
         }
-        setItems(prev=>[...prev,newItem])
+        Dispatch(expenseActions.addItem(newItem))
         console.log(res.data.name)
        }
        catch(e){
@@ -57,24 +55,34 @@ const ExpenseTracker= ()=> {
            alert(e.response.data.error.message)
         }
     }
+
+    const Amount = useSelector(state=>state.expense.totalAmount)
+    // let premiumButtonToggler = false
+    // console.log("total",Amount)
+    // if(Amount>=10000){
+    //     premiumButtonToggler = true
+        
+    // }
     const Navigate =useNavigate()
     return(
         <>
         <Row >
-            <Col xs='8' >
+            <Col xs='6'>
         <h1>welcome to expense Tracker</h1>
         </Col>
         <Col xs='2'>
         <Badge bg='secondary'>your profile is incomplete. <Button className='m-3' onClick={()=>{
             Navigate('/profile')
-        }}>complete now</Button></Badge>
+        }}>complete now</Button></Badge></Col>
+        <Col xs='2'>
+         
         </Col>
         <Col xs='2'>
         <Badge bg='secondary'>verify email<Button className='m-3' onClick={emailVerificationHandler}>verify now</Button></Badge>
         </Col>
         </Row>
         <Row><ExpenseForm ItemHandler={ItemHandler}/></Row>
-        <Row><ExpenseItems ItemList={items} rerender={rerenderHandler}/></Row>
+        <Row><ExpenseItems /></Row>
         </>
     )
 }

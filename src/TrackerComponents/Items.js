@@ -3,9 +3,12 @@ import { Button } from "react-bootstrap";
 import { useState } from "react";
 import Rodal from "rodal";
 import EditTracker from "./EditTracker";
+import { expenseActions } from "../Store/ExpenseReducer";
+import { useDispatch } from "react-redux";
 
 const Items = (props) => {
   const [rodalState, toggleRodalStateHandler] = useState(false);
+  const Dispatch = useDispatch()
 
   const rodalHandler = () => {
     toggleRodalStateHandler((prev) => !prev);
@@ -21,6 +24,7 @@ const Items = (props) => {
     let res = await axios.delete(
       `https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses/${item.name}.json`
     );
+    Dispatch(expenseActions.removeItem(item.name))
     console.log(res.data);
     // props.rerender()
   };

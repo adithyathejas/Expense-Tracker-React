@@ -4,11 +4,14 @@ import Form from 'react-bootstrap/Form'
 import { useRef } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { authActions } from '../Store/AuthReducer'
+import { useDispatch } from 'react-redux'
 
 const Login = ()=> {
     const EmailRef=useRef()
     const PassRef=useRef()
     const navigete=useNavigate()
+    const Dispatch = useDispatch()
     
 
     const loginHandler = async (e)=>{
@@ -23,7 +26,17 @@ const Login = ()=> {
             }
             
             )
+           const payload =  {
+                token: res.data.idToken,
+                userID: res.data.email,
+                expiresIn:res.data.expiresIn
+
+            }
             localStorage.setItem('token',res.data.idToken)
+            localStorage.setItem('userID',res.data.email)
+            localStorage.setItem('expiresIn',res.data.expiresIn)
+            console.log('stored on local storage')
+            Dispatch(authActions.loginHandle(payload))
             navigete("/expensetracker")
           
            

@@ -3,11 +3,16 @@ import  Button  from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { useRef } from 'react'
 import axios from 'axios'
+import { authActions } from '../Store/AuthReducer'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Signup = ()=> {
     const EmailRef=useRef()
     const PassRef=useRef()
     const ConfPassRef=useRef()
+    const Dispatch = useDispatch()
+    const navigete = useNavigate()
 
     const signupHandler = async (e)=>{
         e.preventDefault()
@@ -22,9 +27,23 @@ const Signup = ()=> {
             }
            
             )
-            if(res.status==200){
-                console.log('You are sucessfully registerd')
+            const payload =  {
+                token: res.data.idToken,
+                userID: res.data.email,
+                expiresIn:res.data.expiresIn
+
             }
+            localStorage.setItem('token',res.data.idToken)
+            localStorage.setItem('userID',res.data.email)
+            localStorage.setItem('expiresIn',res.data.expiresIn)
+            Dispatch(authActions.loginHandle(payload))
+           
+            
+            if(res.status==200){
+                alert('You are sucessfully registerd')
+            }
+            navigete("/expensetracker")
+
            
         }catch(e){
                 alert(e.response.data.error.message)
