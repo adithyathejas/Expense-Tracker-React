@@ -25,13 +25,8 @@ const Navigation=()=>{
     const  csvData= [headers, ...rows].map((row) => row.join(',')).join('\n');
 
     const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-    if (navigator.msSaveBlob) {
-      // IE 10+
-      navigator.msSaveBlob(blob, 'itemlist');
-    } else {
-      // Other browsers
+    
       const link = document.createElement('a');
-      if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
         link.setAttribute('download', 'itemlist');
@@ -39,8 +34,8 @@ const Navigation=()=>{
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      }
-    }
+      
+    
   }
 
 
