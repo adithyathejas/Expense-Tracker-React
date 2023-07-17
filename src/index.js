@@ -10,9 +10,11 @@ import store from "./Store";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <div id='dark'>
   <Provider store={store}>
     <App />
     </Provider>
+    </div>
 );
 
 // If you want to start measuring performance in your app, pass a function

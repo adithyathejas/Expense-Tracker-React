@@ -3,8 +3,9 @@ import Form from 'react-bootstrap/Form'
 import Card from '../UI/Card'
 import { useRef,useEffect } from 'react'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 const Profile = ()=>{
-    const token=localStorage.getItem('token')
+    const token=useSelector(state=>state.auth.token)
     const nameRef=useRef()
     const linkRef=useRef()
     

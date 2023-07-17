@@ -6,12 +6,49 @@ import { Button } from 'react-bootstrap';
 import { authActions } from '../Store/AuthReducer';
 import { useDispatch,useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { themeReducerActions } from '../Store/ThemeReducer';
+import { expenseActions } from '../Store/ExpenseReducer';
 
 const Navigation=()=>{
   const isPremium = useSelector(state=>state.expense.isPremium)
   const isLoggedin = useSelector(state=>state.auth.isLoggedin)
+  const premium = useSelector(state=>state.expense.premium)
   let Navigate=useNavigate()
   const Dispatch = useDispatch()
+  const expenses = useSelector(state=>state.expense.Items)
+  
+
+  const handleDownload = () => {
+    // const csvData = convertToCSV();
+    const headers = ['Money', 'Description', 'category']; // CSV headers
+    const rows = expenses.map((expense) => [expense.money, expense.description, expense.category]);
+    const  csvData= [headers, ...rows].map((row) => row.join(',')).join('\n');
+
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) {
+      // IE 10+
+      navigator.msSaveBlob(blob, 'itemlist');
+    } else {
+      // Other browsers
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'itemlist');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  }
+
+
+
+  const themeHandler = ()=>{
+    Dispatch(themeReducerActions.toggleTheme())
+    console.log('theme toggled')
+  }
     const LogoutHandler = ()=>{
       localStorage.clear()
       Dispatch(authActions.logoutHandle())
@@ -32,14 +69,22 @@ const Navigation=()=>{
         </Nav>
 
         {/* Right-aligned buttons */}
-        <Nav>
-          {isPremium && <Button className='m-3' onClick={() => {
+        <Nav className="d-flex">
+          {isPremium && <Button className="me-2" onClick={() => {
+            Dispatch(expenseActions.togglePremium())
             // Put any code you want to execute when the button is clicked.
           }}>Activate Premium</Button>}
         </Nav>
         <Nav>
-          {isLoggedin && <Button onClick={LogoutHandler}>Logout</Button>}
+          {isLoggedin && <Button   className="me-2" onClick={LogoutHandler}>Logout</Button>}
         </Nav>
+        
+       {premium && <Nav>
+          {<Button onClick={themeHandler} className="me-2">Toggle Theme </Button>}
+        </Nav>}
+        {premium&&<Nav>
+          {<Button onClick={handleDownload}>Download as Csv </Button>}
+        </Nav>}
 
         {/* Console log to print 'isLoggedin' value */}
         {console.log(isLoggedin)}

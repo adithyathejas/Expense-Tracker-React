@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import BackgroundCard from '../UI/FormBackground';
+import {useSelector} from 'react-redux'
 
 const ExpenseForm = (props) => {
   const moneySpentRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
+  const theme = useSelector(state=>state.theme.theme)
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,19 +32,19 @@ const ExpenseForm = (props) => {
         <Col xs={6} md={3}>
           <Form.Group controlId="moneySpent">
             <Form.Label>Money Spent:</Form.Label>
-            <Form.Control type="number" ref={moneySpentRef} />
+            <Form.Control type="number" ref={moneySpentRef}  style={theme==='dark'?{ backgroundColor: '#333', color: '#fff' }:{ backgroundColor: '#ded9d9', color: '#080808' }}/>
           </Form.Group>
         </Col>
         <Col xs={6} md={5}>
           <Form.Group controlId="description">
             <Form.Label>Description:</Form.Label>
-            <Form.Control as="textarea" ref={descriptionRef} />
+            <Form.Control as="textarea" ref={descriptionRef} style={theme==='dark'?{ backgroundColor: '#333', color: '#fff' }:{ backgroundColor: '#ded9d9', color: '#080808' }} />
           </Form.Group>
         </Col>
         <Col xs={6} md={3}>
           <Form.Group controlId="category">
             <Form.Label>Category:</Form.Label>
-            <Form.Control as="select" ref={categoryRef}>
+            <Form.Control as="select" ref={categoryRef} style={theme==='dark'?{ backgroundColor: '#333', color: '#fff' }:{ backgroundColor: '#ded9d9', color: '#080808' }}>
               <option value="">Select a category</option>
               <option value="Food">Food</option>
               <option value="Petrol">Petrol</option>

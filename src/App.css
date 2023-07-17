@@ -7,6 +7,17 @@
   pointer-events: none;
 }
 
+#dark {
+  background-color: #181818;
+  color: #878787;
+  height:100vh;
+}
+#light {
+  background-color: #fff;
+  color: #333;
+  height:100vh;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

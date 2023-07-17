@@ -4,7 +4,9 @@ import {createSlice} from '@reduxjs/toolkit'
 const initialstate = {
     Items: [],
     totalAmount:0,
-    isPremium : false
+    isPremium : false,
+    premium:false,
+    
 }
 
 const expenseReducers = createSlice({
@@ -29,6 +31,13 @@ const expenseReducers = createSlice({
             }
 
         }
+        ,
+        togglePremium(state){
+            state.premium=!state.premium
+        }
+
+        
+        
     }
 })
 

@@ -3,31 +3,14 @@ import {Button,Badge,Row,Col, Container} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import ExpenseForm from '../TrackerComponents/ExpenseForm'
 import ExpenseItems from '../TrackerComponents/ExpenseItems'
-import { useState,useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { expenseActions } from '../Store/ExpenseReducer'
 
 const ExpenseTracker= ()=> {
     const Dispatch = useDispatch()
 
-    useEffect(()=>{
-        const updateitem = async ()=>{
-                console.log('updated')
-                let res = await axios.get('https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses.json')
-                console.log('response',res.data)
-                for(let key in res.data){
-                    let item = res.data[key]
-                    let newItem= {
-                        name: key,
-                        ...item
-                    }
-                    
-                    Dispatch(expenseActions.addItem(newItem))
-                    console.log(newItem)
-                }
-        }
-        updateitem()
-    },[])
+    
     // const [items,setItems]=useState([])
     
 
