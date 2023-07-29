@@ -34,6 +34,9 @@ const expenseReducers = createSlice({
         ,
         togglePremium(state){
             state.premium=!state.premium
+        },cleanItems(state){
+            state.Items = []
+            state.totalAmount=0
         }
 
         

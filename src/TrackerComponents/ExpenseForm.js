@@ -1,13 +1,16 @@
 import React, { useRef } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import BackgroundCard from '../UI/FormBackground';
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
+import { ItemHandler } from '../Store/expenseFunctions';
 
 const ExpenseForm = (props) => {
   const moneySpentRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
   const theme = useSelector(state=>state.theme.theme)
+  const user = useSelector(state=>state.auth.user)
+  const Dispatch = useDispatch()
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,7 +20,7 @@ const ExpenseForm = (props) => {
     const description = descriptionRef.current.value;
     const category = categoryRef.current.value;
     const item={money:moneySpent,description:description,category:category}
-    props.ItemHandler(item)
+    Dispatch(ItemHandler(item,user))
     // Handle form submission, e.g., send data to backend or perform validation
     // Reset form values if needed
     moneySpentRef.current.value = '';

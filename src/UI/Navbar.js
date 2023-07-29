@@ -47,6 +47,7 @@ const Navigation=()=>{
     const LogoutHandler = ()=>{
       localStorage.clear()
       Dispatch(authActions.logoutHandle())
+      Dispatch(expenseActions.cleanItems())
       Navigate('./signin')
       
     }

@@ -4,12 +4,13 @@ import { useState } from "react";
 import Rodal from "rodal";
 import EditTracker from "./EditTracker";
 import { expenseActions } from "../Store/ExpenseReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
+import { deleteItemHandler } from "../Store/expenseFunctions";
 
 const Items = (props) => {
   const [rodalState, toggleRodalStateHandler] = useState(false);
   const Dispatch = useDispatch()
-
+  const user = useSelector(state=>state.auth.user)
   const rodalHandler = () => {
     toggleRodalStateHandler((prev) => !prev);
   };
@@ -19,14 +20,9 @@ const Items = (props) => {
 
   console.log(item)
 
-  const deleteItemHandler = async () => {
+  const deleteHandler = async () => {
     setVisible(false);
-    let res = await axios.delete(
-      `https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses/${item.name}.json`
-    );
-    Dispatch(expenseActions.removeItem(item.name))
-    console.log(res.data);
-    // props.rerender()
+    Dispatch(deleteItemHandler(item,user))
   };
 
   return (
@@ -38,7 +34,7 @@ const Items = (props) => {
           <td>{item.description}</td>
           <td>{item.category}</td>
           <td>
-            <Button onClick={deleteItemHandler}>Delete</Button>
+            <Button onClick={deleteHandler}>Delete</Button>
           </td>
           <td>
             <Button onClick={rodalHandler}>Edit</Button>

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import BackgroundCard from '../UI/FormBackground';
 import axios from 'axios';
+import {useSelector} from 'react-redux'
 
 
  
@@ -13,6 +14,7 @@ const EditTracker = (props)=>{
     const moneySpentRef = useRef();
     const descriptionRef = useRef();
     const categoryRef = useRef();
+    const user = useSelector(state=>state.auth.user)
     console.log('name',props.name)
 
     if(props.visible){
@@ -33,7 +35,7 @@ const EditTracker = (props)=>{
         // Handle form submission, e.g., send data to backend or perform validation
         // Reset form values if needed
         try{
-        let res= axios.put(`https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses/${props.name}.json`,item)
+        let res= axios.put(`https://expense-tracker-23c34-default-rtdb.firebaseio.com/expenses/${user}/${props.name}.json`,item)
         props.setItem(item)
         console.log(res.data)
         props.onClose()
